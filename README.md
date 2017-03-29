@@ -4,7 +4,7 @@
 
 Basándote en la implementación de chat de SimpleExampleServer.py del ejercicio anterior,
 modifica el servidor para que sea un servicio de chat que además responda a los conectados
-con la hora, cuando  ́estos se lo pidan mediante un mensaje
+con la hora, cuando éstos se lo pidan mediante un mensaje
 `getTime`.
 
 Recuerda que puedes hacer uso de la biblioteca time de Python.
