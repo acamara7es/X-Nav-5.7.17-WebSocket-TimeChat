@@ -8,19 +8,22 @@ import sys
 import ssl
 import logging
 from SimpleWebSocketServer import WebSocket, SimpleWebSocketServer, SimpleSSLWebSocketServer
+from datetime import datetime
 from optparse import OptionParser
 
 logging.basicConfig(format='%(asctime)s %(message)s', level=logging.DEBUG)
 
-
 class SimpleEcho(WebSocket):
 
     def handleMessage(self):
+        print self.address, "RECIBIDO => ", self.data
         if self.data is None:
             self.data = ''
 
         try:
-            self.sendMessage(str(self.data))
+            message = str(self.data)
+            print self.address, "ENVIADO => ", message
+            self.sendMessage(message)
         except Exception as n:
             print n
 
@@ -32,18 +35,21 @@ class SimpleEcho(WebSocket):
 
 
 class SimpleChat(WebSocket):
-
+    gettime = False
     def handleMessage(self):
         if self.data is None:
             self.data = ''
-
+        elif self.data == "getTime":
+            gettime = True
+            time = datetime.today()
+            self.data = time.strftime("%H:%M:%S %A, %d de %B de %Y")
         for client in self.server.connections.itervalues():
-            if client != self:
+            if client != self or gettime:
                 try:
                     client.sendMessage(str(self.address[0]) + ' - ' + str(self.data))
                 except Exception as n:
                     print n
-
+        gettime = False
     def handleConnected(self):
         print self.address, 'connected'
         for client in self.server.connections.itervalues():

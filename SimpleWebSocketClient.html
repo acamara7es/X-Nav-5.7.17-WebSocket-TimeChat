@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>WebSocket Client</title>
+	<style>
+		.output {
+			border: solid 1px #000;
+			padding: 3px;
+		}
+
+		.sent {
+			text-align: right;
+			background-color: green;
+		}
+
+	</style>
+</head>
+
+<body>
+
+	<form id="form">
+		<input type="text" id="message">
+		<button type="submit">Send</button>
+	</form>
+
+	<hr>
+
+	<div id="output"></div>
+
+	<script>
+		var inputBox = document.getElementById("message");
+		var output = document.getElementById("output");
+		var form = document.getElementById("form");
+
+		try {
+
+			var host = "ws://localhost:8000/";
+			console.log("Host:", host);
+
+			var s = new WebSocket(host);
+
+			s.onopen = function(e) {
+				console.log("Socket opened.");
+			};
+
+			s.onclose = function(e) {
+				console.log("Socket closed.");
+			};
+
+			s.onmessage = function(e) {
+				console.log("Socket message:", e.data);
+				addMessage(e.data);
+			};
+
+			s.onerror = function(e) {
+				console.log("Socket error:", e);
+			};
+
+		} catch (ex) {
+			console.log("Socket exception:", ex);
+		}
+
+		form.addEventListener("submit", function(e) {
+			var data = inputBox.value;
+			e.preventDefault();
+			s.send(data);
+			addMessage(data, true);
+			inputBox.value = "";
+		}, false)
+
+		function addMessage(data, sent) {
+			var p = document.createElement("p");
+			if (sent) {
+				p.className = "sent output";
+			} else {
+				p.className = "output";
+			}
+			p.innerHTML = data;
+			output.appendChild(p);
+		}
+
+	</script>
+
+</body>
+
+</html>
