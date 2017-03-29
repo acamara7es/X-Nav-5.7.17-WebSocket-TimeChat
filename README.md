@@ -11,4 +11,12 @@ Recuerda que puedes hacer uso de la biblioteca time de Python.
 
 ## Resultado
 
-[https://acamara7es.github.io/X-Nav-5.7.17-WebSocket-TimeChat](https://acamara7es.github.io/X-Nav-5.7.17-WebSocket-TimeChat/SimpleWebSocketClient.html)
+Para ejecutar esta práctica es necesario descargarla y arrancar el servidor de pyhton con:
+
+`python SimpleExampleServer.py --example=chat`
+
+Después para servir la página web que hace uso de este servidor podemos usar un módulo de python que actúa como un servidor (desde otra terminal):
+
+`python -m SimpleHTTPServer 8001`
+
+Por último una vez hecho esto abrimos en el navegador varias pestañas accediendo a `localhost:8001` y podremos usar el programa
